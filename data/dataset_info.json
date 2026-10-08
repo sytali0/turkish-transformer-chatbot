@@ -1,0 +1,18 @@
+{
+  "project": "Turkish Transformer-Based Chatbot",
+  "student": "Seyit Ali Arslan (240711024)",
+  "total_pairs": 100000,
+  "source_breakdown": {
+    "odmow_turkish_dialogues": 2942,
+    "sixfinger_chatbot": 220,
+    "3nesdeniz_daily_dialogues": 4521,
+    "customer_service_dialogues": 5960,
+    "kilicai_multi_turn_dialogue": 5095,
+    "cisimcik_turkish_chat": 10747,
+    "ba2han_turkish_chat": 70515
+  },
+  "avg_input_length_words": 13.51,
+  "avg_target_length_words": 31.78,
+  "csv_path": "data/turkish_dialogues_100k.csv",
+  "jsonl_path": "data/turkish_dialogues_100k.jsonl"
+}
