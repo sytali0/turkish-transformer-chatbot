@@ -1,0 +1,20 @@
+{
+  "project": "Turkish Transformer-Based Chatbot",
+  "student": "Seyit Ali Arslan (240711024)",
+  "initial_total": 100000,
+  "cleaned_total": 99959,
+  "columns": [
+    "girdi",
+    "yanit"
+  ],
+  "splits": {
+    "train": 79967,
+    "val": 9995,
+    "test": 9997
+  },
+  "ratios": "80% Train / 10% Val / 10% Test",
+  "sample_dialogue": {
+    "girdi": "Yorgunluk hissetmemizin temel nedeni nedir ve bu durum mitokondrilerle nasıl ilişkilidir?",
+    "yanit": "Yorgunluk hissetmemizin nedeni, hücre sitoplazmasında bulunan *mitokondrilerin* yetersiz enerji üretimi olabilir. Mitokondriler, solunum yoluyla aldığımız oksijeni, hücreye enerji sağlayan ATP (adenozin trifosfat) üretir. Fiziksel aktivite ile oksijen miktarı artar ve mitokondri sayısı doğal olarak **yükselir**. ---"
+  }
+}

@@ -13,34 +13,38 @@ Bu proje, Türkçe dil yapısına uygun sıfırdan bir Transformer tabanlı diya
 turkish-transformer-chatbot/
 │
 ├── data/
-│   ├── turkish_dialogues_100k.csv       # Tam 100.000 Türkçe diyalog çifti (Excel ile açılabilir)
-│   ├── turkish_dialogues_100k.jsonl     # JSONL formatında 100.000 çift (Eğitim için)
-│   ├── dataset_info.json                # Veri seti kaynak ve uzunluk özet istatistikleri
-│   ├── huggingface_dialogues_raw.csv    # İlk indirilen ham HF diyalog örneği
-│   └── opus_subtitles_raw.csv           # İlk indirilen ham OPUS altyazı örneği
+│   ├── train.csv                        # %80 Eğitim seti (79.967 diyalog çifti)
+│   ├── train.jsonl                      # JSONL formatında eğitim seti
+│   ├── val.csv                          # %10 Doğrulama seti (9.995 diyalog çifti)
+│   ├── val.jsonl                        # JSONL formatında doğrulama seti
+│   ├── test.csv                         # %10 Test seti (9.997 diyalog çifti)
+│   ├── test.jsonl                       # JSONL formatında test seti
+│   ├── preprocessing_summary.json       # Ön işleme ve bölme özet raporu
+│   ├── turkish_dialogues_100k.csv       # Ham 100.000 Türkçe diyalog havuzu
+│   └── dataset_info.json                # Ham veri seti istatistikleri
 │
-├── build_hf_dataset_100k.py             # 100.000'lik Hugging Face diyalog derleyici betik
-├── download_raw_data.py                 # Ham verileri indiren şeffaf Python betiği
+├── preprocess_and_split.py              # Temizleme, shuffle ve %80/%10/%10 bölme betiği
+├── build_hf_dataset_100k.py             # 100.000 diyalog derleyici betik
+├── download_raw_data.py                 # Ham verileri indiren Python betiği
 ├── .gitignore                           # Git takip dışı dosyalar
 └── README.md
 ```
 
 ---
 
-## 🔍 100.000 Türkçe Diyalog Veri Seti Dağılımı
+## 🧹 Veri Ön İşleme ve Bölme (Train / Val / Test)
 
-Hugging Face üzerindeki 7 açık kaynaklı Türkçe diyalog ve soru-cevap veri havuzu bir araya getirilmiştir:
-
-| Kaynak Veri Seti | Çift Sayısı | Açıklama |
-| :--- | :--- | :--- |
-| **Ba2han/Turkish_Chat-1402** | 70.515 | Geniş kapsamlı Türkçe diyalog & bilgi soru-cevapları |
-| **cisimcik/turkish-chat-max-25k** | 10.747 | Kullanıcı - Asistan günlük sohbetleri |
-| **emreseyhan/Turkish-customer-service** | 5.960 | Doğal müşteri temsilcisi karşılıklı diyalogları |
-| **kilicai/turkish-sft-multi-turn-dialogue** | 5.095 | Çok turlu Türkçe soru-yanıt diyalogları |
-| **3nesdeniz/turkish-daily-dialogues-5k** | 4.521 | Günlük yaşam ve arkadaş sohbetleri |
-| **odmow/turkish-dialogues** | 2.942 | Samimi günlük Türkçe selamlaşma ve sohbetler |
-| **sixfingerdev/chatbot-turkish-dataset** | 220 | Chatbot yanıt çiftleri |
-| **TOPLAM** | **100.000** | **Proje teklifi hedefi eksiksiz karşılandı** |
+Uygulanan veri ön işleme boru hattı adımları:
+1. **Sütun Sadeleştirme:** `kaynak` sütunu kaldırılarak yalnızca model eğitimi için gerekli olan **`girdi`** ve **`yanit`** sütunları tutuldu.
+2. **Gürültü ve HTML Temizliği:** HTML etiketleri (`<p>`, `<div>`, `<br>`), çözülmemiş HTML karakterleri (`&amp;`, `&#39;`), görünmez kontrol karakterleri ve bozuk unicode dizgileri (`\ufffd`) temizlendi.
+3. **Boşluk Normalizasyonu:** Çoklu boşluklar, sekme ve satır sonu kalıntıları tek boşluğa normalize edildi.
+4. **Geçersiz Satır Filtreleme:** Boş, aşırı kısa veya girdinin yanıta birebir eşit olduğu (papağan yanıtı) satırlar elendi.
+5. **Karıştırma (Shuffle):** Tüm veri kümesi rastgele karıştırıldı (`random_state=42`).
+6. **Bölme (Split):**
+   * **Train (%80):** 79.967 diyalog çifti
+   * **Validation (%10):** 9.995 diyalog çifti
+   * **Test (%10):** 9.997 diyalog çifti
+   * **Toplam Temiz Çift:** 99.959 satır
 
 ---
 
