@@ -1,0 +1,14 @@
+{
+  "project": "Turkish Transformer-Based Chatbot",
+  "student": "Seyit Ali Arslan (240711024)",
+  "tokenizer_type": "BPE",
+  "vocab_size": 12000,
+  "special_tokens": {
+    "[PAD]": 0,
+    "[UNK]": 1,
+    "[BOS]": 2,
+    "[EOS]": 3,
+    "[SEP]": 4
+  },
+  "model_file": "tokenizer\\turkish_bpe_12k.json"
+}

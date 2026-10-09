@@ -23,12 +23,34 @@ turkish-transformer-chatbot/
 │   ├── turkish_dialogues_100k.csv       # Ham 100.000 Türkçe diyalog havuzu
 │   └── dataset_info.json                # Ham veri seti istatistikleri
 │
+├── tokenizer/
+│   ├── turkish_bpe_12k.json             # 12.000 Vocab Size Türkçe BPE modeli
+│   └── tokenizer_config.json            # Özel belirteçler ve yapılandırma
+│
+├── train_tokenizer.py                   # 12k BPE Tokenizer eğitim betiği
 ├── preprocess_and_split.py              # Temizleme, shuffle ve %80/%10/%10 bölme betiği
 ├── build_hf_dataset_100k.py             # 100.000 diyalog derleyici betik
 ├── download_raw_data.py                 # Ham verileri indiren Python betiği
 ├── .gitignore                           # Git takip dışı dosyalar
 └── README.md
 ```
+
+---
+
+## 🔤 Özel Türkçe BPE Tokenizer (12.000 Kelime Dağarcığı)
+
+Türkçe sondan eklemeli bir dil olduğundan geleneksel kelime seviyesinde tokenizasyon sözlük patlamasına (Out-Of-Vocabulary) yol açar. Proje teklifine uygun olarak **12.000 Vocab Size** özel **Byte-Pair Encoding (BPE)** modeli sıfırdan eğitilmiştir:
+
+* **Özel Belirteçler (Special Tokens):**
+  * `[PAD]`: `0` (Dizi boyutu eşitleme)
+  * `[UNK]`: `1` (Bilinmeyen karakter)
+  * `[BOS]`: `2` (Dizi başlangıcı)
+  * `[EOS]`: `3` (Dizi sonu)
+  * `[SEP]`: `4` (Girdi/Yanıt ayracı)
+* **Morfolojik Ayrıştırma Testi:**
+  * Kelime: `evlerindekilerden` $\rightarrow$ `['ev', 'lerindeki', 'lerden']`
+  * Kelime: `öğrenemeyenlerimizdenmişsinizcesine` $\rightarrow$ `['öğ', 'ren', 'e', 'meyen', 'leri', 'mizden', 'miş', 'siniz', 'ce', 'sine']`
+  * Cümle: `Merhaba, nasılsın?` $\rightarrow$ `['Merhaba', ',', 'Ġnasıl', 'sın', '?']` (Kayıpsız geri çözme doğrulandı)
 
 ---
 
