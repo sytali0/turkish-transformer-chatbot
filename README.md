@@ -27,6 +27,7 @@ turkish-transformer-chatbot/
 │   ├── turkish_bpe_12k.json             # 12.000 Vocab Size Türkçe BPE modeli
 │   └── tokenizer_config.json            # Özel belirteçler ve yapılandırma
 │
+├── dataset.py                           # PyTorch Dataset ve DataLoader modülü (Tensör, Padding, Causal Mask)
 ├── train_tokenizer.py                   # 12k BPE Tokenizer eğitim betiği
 ├── preprocess_and_split.py              # Temizleme, shuffle ve %80/%10/%10 bölme betiği
 ├── build_hf_dataset_100k.py             # 100.000 diyalog derleyici betik
