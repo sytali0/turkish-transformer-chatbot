@@ -1,0 +1,148 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Dil ve Karakter Kodlaması ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[turkish]{babel}
+
+% --- Sayfa Yapısı ve Kenar Boşlukları ---
+\usepackage[left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Matematik ve Semboller ---
+\usepackage{amsmath, amssymb, amsfonts}
+
+% --- Tablolar ve Görseller ---
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+
+% --- Başlıklar ve Listeler ---
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+\usepackage{enumitem}
+\setlist{noitemsep, topsep=3pt}
+
+% --- Üst/Alt Bilgi (Header/Footer) ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Deep Learning Project Proposal (2026--2027)}}
+\fancyhead[R]{\small\textit{Seyit Ali Arslan -- 240711024}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- Bağlantılar (Hyperlinks) ---
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=blue!70!black,
+    urlcolor=blue!70!black
+}
+
+\begin{document}
+
+% --- Başlık ve Bilgi Bloğu ---
+\begin{center}
+    {\Large\bfseries PROJE ÖNERİSİ: TÜRKÇE TRANSFORMER TABANLI CHATBOT}\\[0.25cm]
+    {\normalsize\textbf{PROJECT PROPOSAL: TURKISH TRANSFORMER-BASED CHATBOT}}\\[0.4cm]
+    
+    \begin{tabularx}{\textwidth}{Xr}
+        \textbf{Ders / Course:} Deep Learning & \textbf{Akademik Yıl / Year:} 2026--2027 \\
+        \textbf{Öğrenci / Student:} Seyit Ali Arslan & \textbf{Öğrenci No / ID:} 240711024 \\
+    \end{tabularx}
+    \vspace{0.2cm}
+    \hrule height 1pt
+\end{center}
+\vspace{0.3cm}
+
+% --- 1. Proje Başlığı ---
+\section{Proje Başlığı (Project Title)}
+\textbf{Türkçe:} Sıfırdan Eğitilen Türkçe Transformer Tabanlı Chatbot ve İki Yönlü Mimarilerle Karşılaştırmalı Başarım Analizi \\
+\textbf{İngilizce:} \textit{Training a Custom Turkish Transformer-Based Chatbot from Scratch and Comparative Performance Analysis against Recurrent Baselines}
+
+% --- 2. Problem Tanımı ---
+\section{Problem Tanımı (Problem Statement)}
+Doğal Dil İşleme (NLP) alanında Türkçe gibi sondan eklemeli (\textit{agglutinative}) ve zengin morfolojik yapıya sahip dillerde akıcı, bağlamı koruyan ve mantıklı diyalog sistemleri geliştirmek kritik bir zorluktur. Geleneksel Yinelemeli Sinir Ağı (RNN/LSTM) mimarileri, sıralı veri işleme yapıları nedeniyle uzun dizilerde bağlamı kaçırmakta ve donanım kaynaklarını paralel işleyememektedir. Bu projede, diyalog geçmişindeki uzun süreli bağımlılıkları ve morfolojik yapıları öz-dikkat (\textit{Self-Attention}) mekanizmasıyla modelleyen sıfırdan bir Transformer mimarisi inşa edilecektir.
+
+% --- 3. Motivasyon ---
+\section{Motivasyon (Motivation)}
+Türkçe dil yapısına özel olarak sıfırdan eğitilmiş açık erişimli küçük ölçekli diyalog modellerinin eksikliği ve bu modellerin kaputunun altındaki matematiksel süreçlerin (\textit{Self-Attention}, \textit{Positional Encoding}, \textit{Causal Masking}) incelenmesi hem akademik hem de pratik açıdan yüksek değere sahiptir. Ayrıca, Transformer mimarisinin geleneksel Seq2Seq LSTM modellerine kıyasla Türkçe diyaloglar üzerindeki eğitim hızı, bağlam koruma yeteneği ve kelime türetme başarısının deneysel olarak kanıtlanması hedeflenmektedir.
+
+% --- 4. Veri Kümesi ---
+\section{Veri Kümesi (Dataset)}
+\begin{itemize}
+    \item \textbf{Veri Seti Kaynağı:} Türkçe OpenSubtitles (OPUS) diyalog verileri ve Türkçe sosyal medya/forum soru-cevap çiftlerinin Python tabanlı kazıma (\textit{scraping}) boru hattı ile derlenmiş hibrit veri kümesi.
+    \item \textbf{Boyut ve Yapı:} Minimum 100.000 diyalog çifti (\textit{Girdi:} Kullanıcı Mesajı, \textit{Hedef:} Yanıt).
+    \item \textbf{Veri Bölme (Split):} \%80 Eğitim (\textit{Train}), \%10 Doğrulama (\textit{Validation}), \%10 Test.
+    \item \textbf{Yedek Plan (B-Planı):} Veri toplama sürecinde yaşanabilecek olası gecikmelere karşı Hugging Face üzerindeki hazır etiketli ``turkish-dialogue'' veri setleri (özellikle \textit{Ba2han/Turkish\_Chat}, \textit{cisimcik/turkish-chat}, \textit{odmow/turkish-dialogues}) doğrudan B-planı olarak belirlenmiştir.
+\end{itemize}
+
+% --- 5. Önerilen Metodoloji ---
+\section{Önerilen Metodoloji (Proposed Methodology)}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Özel Tokenizasyon:} Türkçe ek yapısını verimli temsil edebilmek ve bilinmeyen kelime (\textit{Out-Of-Vocabulary - OOV}) sorununu bertaraf etmek adına kelime dağarcığı (\textit{Vocab Size}) 12.000 olarak belirlenen özel bir Byte-Pair Encoding (BPE) Tokenizer sıfırdan eğitilecektir. Özel belirteçler olarak \texttt{[PAD]} (0), \texttt{[UNK]} (1), \texttt{[BOS]} (2), \texttt{[EOS]} (3) ve \texttt{[SEP]} (4) entegre edilecektir.
+    
+    \item \textbf{Mimari İnşa:} PyTorch kütüphanesi kullanılarak harici soyut kütüphaneler olmaksızın; Çok Başlıklı Dikkat (\textit{Multi-Head Attention}), Konumsal Kodlama (\textit{Positional Encoding}), İleri Beslemeli Ağlar (\textit{Feed-Forward Networks}) ve Nedensel Maskeleme (\textit{Causal Masking}) modülleri temel tensör seviyesinde sıfırdan kodlanacaktır:
+    \begin{equation}
+        \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+    \end{equation}
+    
+    \item \textbf{Eğitim Stratejisi:} Isınma adımlı (\textit{Warmup}) ve dinamik öğrenme oranlı Noam Optimizer stratejisi uygulanarak model takılmaları ve çöküşleri engellenecektir:
+    \begin{equation}
+        \text{lr} = d_{\text{model}}^{-0.5} \cdot \min\left(\text{step\_num}^{-0.5}, \;\text{step\_num} \cdot \text{warmup\_steps}^{-1.5}\right)
+    \end{equation}
+\end{enumerate}
+
+% --- 6. Temel Model (Baseline Model) ---
+\section{Temel Model (Baseline Model)}
+Geleneksel mimariler ile Transformer arasındaki farkı somutlaştırmak amacıyla, Bahdanau dikkat mekanizmalı standart bir Seq2Seq LSTM (Encoder-Decoder) modeli temel (\textit{baseline}) model olarak sıfırdan eğitilecektir.
+
+% --- 7. Planlanan Derin Öğrenme Modelleri ---
+\section{Planlanan Derin Öğrenme Modelleri (Planned Deep Learning Models)}
+\begin{table}[h!]
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{l p{7.5cm} c c}
+        \toprule
+        \textbf{Model Adı} & \textbf{Mimari Özellikleri} & \textbf{Katman Sayısı} & \textbf{Head / $d_{\text{model}}$} \\
+        \midrule
+        \textbf{Baseline} & Seq2Seq LSTM Chatbot (2-layer Bi-LSTM Encoder + LSTM Decoder) & 2 & -- / 256 \\
+        \textbf{Model A} & Sıfırdan Eğitilen Standart Transformer & 4 & 4 Head / 256 \\
+        \textbf{Model B} & Derinleştirilmiş ve Optimizasyonu Ayarlanmış Transformer & 6 & 8 Head / 512 \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Karşılaştırmalı analiz kapsamında eğitilecek model konfigürasyonları.}
+\end{table}
+
+% --- 8. Değerlendirme Metrikleri ---
+\section{Değerlendirme Metrikleri (Evaluation Metrics)}
+\begin{itemize}
+    \item \textbf{Otomatik Metrikler:} BLEU (1--4), ROUGE-L, Perplexity (Karmaşıklık Skoru, $\text{PPL} = \exp(\text{Cross-Entropy})$).
+    \item \textbf{Eğitim Metrikleri:} Cross-Entropy Loss (Epoch/Loss ve Aşırı Öğrenme / \textit{Overfitting} analizi).
+    \item \textbf{Nitel Değerlendirme:} Hata analizi kapsamında seçilen örnek diyalog çıktıları üzerinde insan değerlendirmesi (\textit{Human Evaluation}).
+\end{itemize}
+
+% --- 9. Beklenen Katkı ---
+\section{Beklenen Katkı (Expected Contribution)}
+\begin{itemize}
+    \item Türkçe dili için sıfırdan yazılmış, uçtan uca tekrarlanabilir (\textit{reproducible}) açık kaynaklı bir Transformer diyalog boru hattının oluşturulması.
+    \item Dikkat başlığı sayısı (\textit{Attention Heads}) ve katman derinliğinin Türkçe diyalog başarımı üzerindeki etkisini gösteren deneysel analizler.
+    \item XAI (\textit{Açıklanabilir Yapay Zeka}) kapsamında, Decoder yanıt üretirken Encoder tarafındaki hangi Türkçe kelimelere odaklandığını gösteren Dikkat Ağırlığı (\textit{Attention Weight}) matris haritalarının sunulması.
+\end{itemize}
+
+% --- 10. Kaynakça ---
+\section{Kaynakça (References)}
+\begin{enumerate}[label={[\arabic*]}]
+    \item Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., \& Polosukhin, I. (2017). ``Attention is All You Need.'' \textit{Advances in Neural Information Processing Systems (NIPS 2017)}.
+    \item Bahdanau, D., Cho, K., \& Bengio, Y. (2014). ``Neural Machine Translation by Jointly Learning to Align and Translate.'' \textit{International Conference on Learning Representations (ICLR 2015)}.
+    \item Tiedemann, J. (2012). ``Parallel Data, Tools and Interfaces in OPUS.'' \textit{Language Resources and Evaluation Conference (LREC 2012)}.
+    \item Sennrich, R., Haddow, B., \& Birch, A. (2016). ``Neural Machine Translation of Rare Words with Subword Units.'' \textit{Association for Computational Linguistics (ACL 2016)}.
+\end{enumerate}
+
+\end{document}
