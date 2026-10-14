@@ -3,7 +3,7 @@
 % --- Dil ve Karakter Kodlaması ---
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[turkish]{babel}
+\usepackage[shorthands=off, turkish]{babel}
 
 % --- Sayfa Yapısı ve Kenar Boşlukları ---
 \usepackage[left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
@@ -85,7 +85,7 @@ Türkçe dil yapısına özel olarak sıfırdan eğitilmiş açık erişimli kü
 
 % --- 5. Önerilen Metodoloji ---
 \section{Önerilen Metodoloji (Proposed Methodology)}
-\begin{enumerate}[label=\textbf{\arabic*.}]
+\begin{enumerate}
     \item \textbf{Özel Tokenizasyon:} Türkçe ek yapısını verimli temsil edebilmek ve bilinmeyen kelime (\textit{Out-Of-Vocabulary - OOV}) sorununu bertaraf etmek adına kelime dağarcığı (\textit{Vocab Size}) 12.000 olarak belirlenen özel bir Byte-Pair Encoding (BPE) Tokenizer sıfırdan eğitilecektir. Özel belirteçler olarak \texttt{[PAD]} (0), \texttt{[UNK]} (1), \texttt{[BOS]} (2), \texttt{[EOS]} (3) ve \texttt{[SEP]} (4) entegre edilecektir.
     
     \item \textbf{Mimari İnşa:} PyTorch kütüphanesi kullanılarak harici soyut kütüphaneler olmaksızın; Çok Başlıklı Dikkat (\textit{Multi-Head Attention}), Konumsal Kodlama (\textit{Positional Encoding}), İleri Beslemeli Ağlar (\textit{Feed-Forward Networks}) ve Nedensel Maskeleme (\textit{Causal Masking}) modülleri temel tensör seviyesinde sıfırdan kodlanacaktır:
