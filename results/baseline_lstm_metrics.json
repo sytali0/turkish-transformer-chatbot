@@ -1,0 +1,87 @@
+{
+  "model_name": "Baseline: 2-Layer Seq2Seq Bi-LSTM + Bahdanau Attention",
+  "parameters": 23110112,
+  "training_history": {
+    "epoch": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "train_loss": [
+      7.437,
+      6.7323,
+      6.4886,
+      6.4022,
+      6.4576
+    ],
+    "val_loss": [
+      7.6912,
+      7.5409,
+      7.3893,
+      7.264,
+      7.1915
+    ],
+    "train_ppl": [
+      1697.7,
+      839.04,
+      657.62,
+      603.15,
+      637.53
+    ],
+    "val_ppl": [
+      2188.93,
+      1883.49,
+      1618.6,
+      1428.02,
+      1328.04
+    ],
+    "epoch_time_sec": [
+      147.8,
+      142.2,
+      139.7,
+      70.3,
+      72.4
+    ]
+  },
+  "final_val_loss": 7.1915,
+  "final_val_perplexity": 1328.04,
+  "avg_inference_latency_ms": 30.07,
+  "bleu1": 6.01,
+  "bleu2": 3.63,
+  "rouge1": 10.11,
+  "rougeL": 8.86,
+  "sample_outputs": [
+    {
+      "girdi": "Faturamda 'ödeme hatası' var. Ben ödeme yaptıktan sonra neden hala bu hatayı alıyorum?",
+      "gercek_yanit": "Merhaba, hemen kontrol ediyorum. Bu genellikle sistemsel bir hata olabilir. Hesap bilgilerinizi paylaşabilir misiniz?",
+      "baseline_yanit": "Merhaba, yaşadığınız sorun için üzgünüz. Hemen kontrol ediyorum ve değişim işlem ücreti yanlışlıkla eklenmiş.",
+      "latency_ms": 49.36
+    },
+    {
+      "girdi": "Sanırım meditasyon yapmayı deneyebilirim. Başlamak için iyi bir kaynak var mı?",
+      "gercek_yanit": "Meditasyon için, başlangıç seviyesindeki rehberli meditasyonlar sunan \"Headspace\" veya \"Calm\" gibi uygulamaları deneyebilirsiniz. Ayrıca, YouTube'da çeşitli meditasyon teknikleri hakkında eğitici videolar bulabilirsiniz.",
+      "baseline_yanit": "Evet, bu tür bir., ve!",
+      "latency_ms": 16.53
+    },
+    {
+      "girdi": "Çelebi Mehmed döneminde (1413-1420) gerçekleşen ve devleti tehdit eden iki büyük olay neydi?",
+      "gercek_yanit": "Osmanlı devleti (I. Mehmed), yeniden eski ihtişamına kavuşmak isterken, iç ve dış düşmanlarla karşılaşmıştır: İç: Şeyh Bedreddin isyanı Dış: Timur'dan esir düşen Yıldırım Bayezid'in oğlu Düzmece Mustafa'nın salıverilmesi çabaları.",
+      "baseline_yanit": "E-19,'nin (19-4'nin %5. Bu,'nin %.,'nin %.,'nin %",
+      "latency_ms": 40.73
+    },
+    {
+      "girdi": "Güneydoğu'daki çözüm çabalarında hangi somut aksaklıklar var?",
+      "gercek_yanit": "Hükümet, Güneydoğu'da hasar görmüş alanların yeniden inşası için yatırım planı uygulasa da, yerinden olmuş kişilere ödenen tazminat çok azdır. Barışçıl çözüm için güvenilir siyasi sürecin yeniden başlatılmasına dair hiçbir ilerleme kaydedilmemiştir.",
+      "baseline_yanit": "KİK, ve.'nun, ve.'nin % ve.,'nin %. ve,'nin %. ve,'nin",
+      "latency_ms": 49.8
+    },
+    {
+      "girdi": "Enerji iç piyasalarındaki ilerlemeleri maddeler hâlinde anlat. Özellikle elektrik ve doğal gaz piyasalarına odaklan.",
+      "gercek_yanit": "Elbette. Enerji piyasalarında önemli ilerlemeler kaydedilmiştir.",
+      "baseline_yanit": "KİK, ve temel sorunlar şunlardır: 1. ve,: 1. ve,: 1. ve,: 1. ve,: 1.",
+      "latency_ms": 40.85
+    }
+  ]
+}
