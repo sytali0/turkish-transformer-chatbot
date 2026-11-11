@@ -5,6 +5,7 @@
 \usepackage[shorthands=off, turkish]{babel}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
+\graphicspath{{figures/}{./}}
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{array}
@@ -103,7 +104,7 @@
         \end{column}
         \begin{column}{0.54\textwidth}
             \centering
-            \includegraphics[width=0.98\textwidth]{figures/01_veri_bolumleme_split.png}
+            \includegraphics[width=0.98\textwidth]{01_veri_bolumleme_split.png}
         \end{column}
     \end{columns}
 \end{frame}
@@ -113,13 +114,13 @@
     \begin{columns}[c]
         \begin{column}{0.52\textwidth}
             \centering
-            \includegraphics[width=0.98\textwidth]{figures/02_kelime_uzunlugu_dagilimi.png}
+            \includegraphics[width=0.98\textwidth]{02_kelime_uzunlugu_dagilimi.png}
             \vspace{2pt}
             {\scriptsize Ortalama Girdi: \textbf{9.73 kelime} $\mid$ Ortalama Yanıt: \textbf{15.49 kelime}}
         \end{column}
         \begin{column}{0.46\textwidth}
             \centering
-            \includegraphics[width=0.98\textwidth]{figures/03_veri_kaynaklari_dagilimi.png}
+            \includegraphics[width=0.98\textwidth]{03_veri_kaynaklari_dagilimi.png}
             \vspace{2pt}
             {\scriptsize Çoklu açık kaynak birleşimi ile yüksek alan çeşitliliği}
         \end{column}
@@ -174,7 +175,7 @@
         \end{column}
         \begin{column}{0.60\textwidth}
             \centering
-            \includegraphics[width=0.99\textwidth]{figures/04_baseline_lstm_egitim_egrisi.png}
+            \includegraphics[width=0.99\textwidth]{04_baseline_lstm_egitim_egrisi.png}
         \end{column}
     \end{columns}
 \end{frame}
@@ -193,7 +194,7 @@
         \end{column}
         \begin{column}{0.60\textwidth}
             \centering
-            \includegraphics[width=0.99\textwidth]{figures/05_model_karsilastirma_loss_ppl.png}
+            \includegraphics[width=0.99\textwidth]{05_model_karsilastirma_loss_ppl.png}
         \end{column}
     \end{columns}
 \end{frame}
@@ -214,24 +215,25 @@
         \end{column}
         \begin{column}{0.60\textwidth}
             \centering
-            \includegraphics[width=0.99\textwidth]{figures/06_metrik_ve_hiz_karsilastirmasi.png}
+            \includegraphics[width=0.99\textwidth]{06_metrik_ve_hiz_karsilastirmasi.png}
         \end{column}
     \end{columns}
 \end{frame}
 
 % --- SLAYT 10: Tüm Metrikler Özet Tablosu ve Niteliksel Örnekler ---
 \begin{frame}{VII. Nicel Karşılaştırma Tablosu ve Nitel Diyalog Örnekleri}
-    \footnotesize
     \begin{table}
         \centering
+        \resizebox{0.96\textwidth}{!}{%
         \begin{tabular}{lccccccc}
             \toprule
-            \textbf{Model} & \textbf{Parametre} & \textbf{Val Loss $\downarrow$} & \textbf{Val PPL $\downarrow$} & \textbf{BLEU-1 $\uparrow$} & \textbf{BLEU-2 $\uparrow$} & \textbf{ROUGE-1 $\uparrow$} & \textbf{Latency} \\
+            \textbf{Model} & \textbf{Parametre} & \textbf{Val Loss $\downarrow$} & \textbf{Val PPL $\downarrow$} & \textbf{BLEU-1 $\uparrow$} & \textbf{BLEU-2 $\uparrow$} & \textbf{ROUGE-1 $\uparrow$} & \textbf{Latency $\downarrow$} \\
             \midrule
             \textbf{Baseline Seq2Seq Bi-LSTM} & 23.1M & 7.1915 & 1328.04 & 6.96 & 4.02 & 9.76 & \textbf{30.07 ms} \\
             \textbf{Model 1: Fine-Tuned GPT-2} & 124.4M & \textbf{3.4666} & \textbf{32.03} & \textbf{10.60} & \textbf{5.70} & \textbf{15.89} & 352.90 ms \\
             \bottomrule
-        \end{tabular}
+        \end{tabular}%
+        }
     \end{table}
     \vspace{-4pt}
     \begin{block}{Niteliksel (Qualitative) Çıktı Analizi}

@@ -7,6 +7,7 @@
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
+\graphicspath{{figures/}{./}}
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{array}
@@ -61,7 +62,7 @@ Proje önerisinde tanımlanan ölçütler doğrultusunda, Hugging Face üzerinde
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\columnwidth]{figures/01_veri_bolumleme_split.png}
+    \includegraphics[width=0.98\columnwidth]{01_veri_bolumleme_split.png}
     \caption{50.000 Türkçe diyalog çiftinin Eğitim (\%80), Doğrulama (\%10) ve Test (\%10) kümelerine dağılımı.}
     \label{fig:split}
 \end{figure}
@@ -70,14 +71,14 @@ Keşifsel Veri Analizi (EDA) sonucunda kullanıcı girdilerinin ortalama \textbf
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\columnwidth]{figures/02_kelime_uzunlugu_dagilimi.png}
+    \includegraphics[width=0.98\columnwidth]{02_kelime_uzunlugu_dagilimi.png}
     \caption{Kullanıcı girdisi ve model yanıtı kelime uzunluğu dağılımları.}
     \label{fig:lengths}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\columnwidth]{figures/03_veri_kaynaklari_dagilimi.png}
+    \includegraphics[width=0.92\columnwidth]{03_veri_kaynaklari_dagilimi.png}
     \caption{Derlenen 50.000 Türkçe diyalog çiftinin kaynak veri setlerine göre dağılımı.}
     \label{fig:sources}
 \end{figure}
@@ -127,7 +128,7 @@ Sıfırdan eğitilen Baseline Seq2Seq Bi-LSTM modeli 5 Epoch sonunda eğitim kay
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\columnwidth]{figures/04_baseline_lstm_egitim_egrisi.png}
+    \includegraphics[width=0.98\columnwidth]{04_baseline_lstm_egitim_egrisi.png}
     \caption{Baseline 2-Katmanlı Seq2Seq Bi-LSTM + Bahdanau Attention modelinin 5 Epoch boyunca Loss ve Perplexity değişimi.}
     \label{fig:base_curve}
 \end{figure}
@@ -137,7 +138,7 @@ Sıfırdan eğitilen Baseline Seq2Seq Bi-LSTM modeli 5 Epoch sonunda eğitim kay
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\columnwidth]{figures/05_model_karsilastirma_loss_ppl.png}
+    \includegraphics[width=0.98\columnwidth]{05_model_karsilastirma_loss_ppl.png}
     \caption{Baseline Seq2Seq Bi-LSTM ile Fine-Tuned Turkish-GPT-2 modellerinin Validation Loss ve Perplexity (PPL) karşılaştırması.}
     \label{fig:comp_loss}
 \end{figure}
@@ -146,6 +147,7 @@ Sıfırdan eğitilen Baseline Seq2Seq Bi-LSTM modeli 5 Epoch sonunda eğitim kay
     \centering
     \caption{Baseline Seq2Seq Bi-LSTM ve Fine-Tuned Turkish-GPT-2 Nicel Karşılaştırma Tablosu}
     \label{tab:metrics}
+    \resizebox{\columnwidth}{!}{%
     \begin{tabular}{lccr}
         \toprule
         \textbf{Metrik} & \textbf{Baseline Bi-LSTM} & \textbf{Fine-Tuned GPT-2} & \textbf{Fark / İyileşme} \\
@@ -159,14 +161,15 @@ Sıfırdan eğitilen Baseline Seq2Seq Bi-LSTM modeli 5 Epoch sonunda eğitim kay
         ROUGE-L (\%) ($\uparrow$) & 9.76 & \textbf{14.47} & \textbf{+\%48.3 Artış} \\
         Latency (ms/yanıt) ($\downarrow$) & \textbf{30.07 ms} & 352.90 ms & $< 0.4\text{ sn}$ (Gerçek Zamanlı) \\
         \bottomrule
-    \end{tabular}
+    \end{tabular}%
+    }
 \end{table}
 
 Tablo~\ref{tab:metrics} ve Şekil~\ref{fig:comp_metrics}'da görüldüğü üzere, Fine-Tuned \texttt{Turkish-GPT-2} modeli tüm metin kalite ve benzerlik metriklerinde (BLEU-1/2, ROUGE-1/L) Baseline Bi-LSTM modeline belirgin üstünlük sağlamıştır. Çıkarım süresi (Inference Latency) açısından 23.1M parametreli hafif Bi-LSTM modeli 30.07 ms ile daha hızlı olsa da, 124.4M parametreli Transformer modeli \texttt{FP16 + KV-Cache} optimizasyonu sayesinde ortalama \textbf{352.90 ms} ($<0.4$ saniye) ile gerçek zamanlı etkileşim sınırları içerisinde yanıt üretmektedir.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\columnwidth]{figures/06_metrik_ve_hiz_karsilastirmasi.png}
+    \includegraphics[width=0.98\columnwidth]{06_metrik_ve_hiz_karsilastirmasi.png}
     \caption{Modellerin BLEU-1, BLEU-2, ROUGE-1, ROUGE-L metin benzerlik skorları ve ortalama çıkarım gecikmesi (Inference Latency) karşılaştırması.}
     \label{fig:comp_metrics}
 \end{figure}
@@ -182,19 +185,26 @@ Test ve doğrulama kümesinden seçilen örnek girdiler üzerinde yapılan nitel
     \centering
     \caption{Doğrulama Kümesinden Seçilen Örnek Diyalog Çıktılarının Nitel Karşılaştırması}
     \label{tab:qualitative}
-    \begin{tabularx}{\columnwidth}{l X}
+    \footnotesize
+    \begin{tabularx}{\columnwidth}{>{\bfseries}p{2.35cm} X}
         \toprule
-        \textbf{Örnek 1 Girdi:} & \textit{``Faturamda 'ödeme hatası' var. Ben ödeme yaptıktan sonra neden hala bu hatayı alıyorum?''} \\
-        \textbf{Baseline Bi-LSTM:} & Merhaba, yaşadığınız sorun için üzgünüz. Hemen kontrol ediyorum ve değişim işlem ücreti yanlışlıkla eklenmiş. \\
-        \textbf{Fine-Tuned GPT-2:} & \textbf{Hesap numaranızı paylaşabilir misiniz?} \\
+        Örnek 1 Girdi: & \textit{``Faturamda 'ödeme hatası' var. Ben ödeme yaptıktan sonra neden hala bu hatayı alıyorum?''} \\
+        \addlinespace[3pt]
+        Baseline Bi-LSTM: & Merhaba, yaşadığınız sorun için üzgünüz. Hemen kontrol ediyorum ve değişim işlem ücreti yanlışlıkla eklenmiş. \\
+        \addlinespace[3pt]
+        Fine-Tuned GPT-2: & \textbf{Hesap numaranızı paylaşabilir misiniz?} \\
         \midrule
-        \textbf{Örnek 2 Girdi:} & \textit{``Enerji iç piyasalarındaki ilerlemeleri maddeler hâlinde anlat. Özellikle elektrik ve doğal gaz piyasalarına odaklan.''} \\
-        \textbf{Baseline Bi-LSTM:} & KİK, ve temel sorunlar şunlardır: 1. ve,: 1. ve,: 1. ve,: 1. \textit{(Darboğaz kaynaklı tekrar döngüsü)} \\
-        \textbf{Fine-Tuned GPT-2:} & \textbf{Enerji sektörü, enerji verimliliği gibi alanlarda önemli ilerlemeler kaydetmiştir. Enerji verimliliği ve yenilenebilir enerji kaynakları konusunda ise önemli adımlar atılmıştır.} \\
+        Örnek 2 Girdi: & \textit{``Enerji iç piyasalarındaki ilerlemeleri maddeler hâlinde anlat. Özellikle elektrik ve doğal gaz piyasalarına odaklan.''} \\
+        \addlinespace[3pt]
+        Baseline Bi-LSTM: & KİK, ve temel sorunlar şunlardır: 1. ve,: 1. ve,: 1. ve,: 1. \textit{(Darboğaz kaynaklı tekrar döngüsü)} \\
+        \addlinespace[3pt]
+        Fine-Tuned GPT-2: & \textbf{Enerji sektörü, enerji verimliliği gibi alanlarda önemli ilerlemeler kaydetmiştir. Enerji verimliliği ve yenilenebilir enerji kaynakları konusunda ise önemli adımlar atılmıştır.} \\
         \midrule
-        \textbf{Örnek 3 Girdi:} & \textit{``Güneydoğu'daki çözüm çabalarında hangi somut aksaklıklar var?''} \\
-        \textbf{Baseline Bi-LSTM:} & KİK, ve.'nun, ve.'nin \% ve.,'nin \%. \textit{(Anlamsal kopukluk)} \\
-        \textbf{Fine-Tuned GPT-2:} & \textbf{Doğu'da çözüm çabalarının sınırlı olduğu görülmektedir. Bu durum, Türkiye'nin AB müktesebatıyla tam olarak uyumlu hale getirilmesi için...} \\
+        Örnek 3 Girdi: & \textit{``Güneydoğu'daki çözüm çabalarında hangi somut aksaklıklar var?''} \\
+        \addlinespace[3pt]
+        Baseline Bi-LSTM: & KİK, ve.'nun, ve.'nin \% ve.,'nin \%. \textit{(Anlamsal kopukluk)} \\
+        \addlinespace[3pt]
+        Fine-Tuned GPT-2: & \textbf{Doğu'da çözüm çabalarının sınırlı olduğu görülmektedir. Bu durum, Türkiye'nin AB müktesebatıyla tam olarak uyumlu hale getirilmesi için...} \\
         \bottomrule
     \end{tabularx}
 \end{table}
