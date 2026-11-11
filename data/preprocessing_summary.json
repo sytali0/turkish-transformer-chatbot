@@ -1,20 +1,29 @@
 {
-  "project": "Turkish Transformer-Based Chatbot",
+  "project": "Önceden Eğitilmiş Türkçe Modellerle İnce Ayar (Fine-Tuning) Tabanlı Chatbot Geliştirme ve Seq2Seq Karşılaştırmalı Başarım Analizi",
   "student": "Seyit Ali Arslan (240711024)",
-  "initial_total": 100000,
-  "cleaned_total": 99959,
-  "columns": [
-    "girdi",
-    "yanit"
-  ],
+  "university": "Atatürk Üniversitesi, Yapay Zeka ve Veri Mühendisliği",
+  "total_clean_pairs": 50000,
   "splits": {
-    "train": 79967,
-    "val": 9995,
-    "test": 9997
+    "train": 40000,
+    "validation": 5000,
+    "test": 5000
   },
-  "ratios": "80% Train / 10% Val / 10% Test",
-  "sample_dialogue": {
-    "girdi": "Yorgunluk hissetmemizin temel nedeni nedir ve bu durum mitokondrilerle nasıl ilişkilidir?",
-    "yanit": "Yorgunluk hissetmemizin nedeni, hücre sitoplazmasında bulunan *mitokondrilerin* yetersiz enerji üretimi olabilir. Mitokondriler, solunum yoluyla aldığımız oksijeni, hücreye enerji sağlayan ATP (adenozin trifosfat) üretir. Fiziksel aktivite ile oksijen miktarı artar ve mitokondri sayısı doğal olarak **yükselir**. ---"
-  }
+  "avg_input_words": 12.62,
+  "avg_target_words": 22.66,
+  "median_input_words": 11,
+  "median_target_words": 23,
+  "source_distribution": {
+    "ba2han_turkish_chat": 27816,
+    "cisimcik_turkish_chat": 6373,
+    "customer_service_dialogues": 5756,
+    "3nesdeniz_daily_dialogues": 4521,
+    "odmow_turkish_dialogues": 2727,
+    "kilicai_multi_turn_dialogue": 2680,
+    "sixfinger_chatbot": 127
+  },
+  "generated_figures": [
+    "figures\\01_veri_bolumleme_split.png",
+    "figures\\02_kelime_uzunlugu_dagilimi.png",
+    "figures\\03_veri_kaynaklari_dagilimi.png"
+  ]
 }
