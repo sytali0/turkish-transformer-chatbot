@@ -1,80 +1,69 @@
-# Turkish Transformer-Based Chatbot
+# Önceden Eğitilmiş Türkçe Modellerle İnce Ayar (Fine-Tuning) Tabanlı Chatbot Geliştirme ve Seq2Seq Karşılaştırmalı Başarım Analizi
 
-**Öğrenci:** Seyit Ali Arslan (240711024)  
-**Ders:** Deep Learning (2026–2027)  
-
-Bu proje, Türkçe dil yapısına uygun sıfırdan bir Transformer tabanlı diyalog modeli (chatbot) geliştirmeyi ve geleneksel Seq2Seq LSTM baselineları ile karşılaştırmalı başarım analizini amaçlar.
+**Öğrenci:** Seyit Ali Arslan (`240711024`)  
+**Bölüm:** Yapay Zeka ve Veri Mühendisliği, Atatürk Üniversitesi  
+**Ders:** Deep Learning (`2026–2027`)  
 
 ---
 
-## 📁 Proje Klasör Yapısı
+## 📄 IEEE Resmi Ara Sunum Belgeleri (LaTeX & PDF)
 
-```
+- **IEEE Konferans Formatlı Ara Rapor (PDF):** [`ara_rapor_ieee.pdf`](./ara_rapor_ieee.pdf) | Kaynak Kod: [`ara_rapor_ieee.tex`](./ara_rapor_ieee.tex)
+- **IEEE Akademik Sunum Slaytları - Beamer 16:9 (PDF):** [`ara_sunum_ieee_beamer.pdf`](./ara_sunum_ieee_beamer.pdf) | Kaynak Kod: [`ara_sunum_ieee_beamer.tex`](./ara_sunum_ieee_beamer.tex)
+- **Slayt-Slayt Konuşmacı Notları ve Rehber:** [`ARA_SUNUM_RAPORU.md`](./ARA_SUNUM_RAPORU.md)
+
+---
+
+## 📊 Ara Sunum (Midterm) Deneysel Karşılaştırma Özeti
+
+Yerel **NVIDIA GeForce RTX 4060 Laptop GPU (8 GB VRAM, CUDA 12.4)** üzerinde **50.000 Türkçe diyalog çifti** (`40.000` Train / `5.000` Validation / `5.000` Test) kullanılarak sıfırdan eğitilen **2 Katmanlı Seq2Seq Bi-LSTM + Bahdanau Attention (Baseline)** modeli ile ince ayar yapılan **Fine-Tuned Turkish-GPT-2 (Model 1)** modelinin karşılaştırmalı sonuçları:
+
+| Değerlendirme Metriği | Baseline Model (Seq2Seq Bi-LSTM + Bahdanau Attention) | Model 1: Fine-Tuned Transformer (`Turkish-GPT-2`) | Başarım Değişimi / Yorum |
+| :--- | :---: | :---: | :--- |
+| **Parametre Sayısı** | `23,110,112` (~23.1M) | `124,440,576` (~124.4M) | Önceden eğitilmiş zengin Türkçe temsil |
+| **Validation Loss ($\downarrow$)** | `7.1915` | **`3.4666`** | **%51.8 daha düşük hata** |
+| **Validation Perplexity - PPL ($\downarrow$)** | `1328.04` | **`32.03`** | **41.5 kat iyileşme** |
+| **BLEU-1 (%) ($\uparrow$)** | `6.96` | **`10.60`** | **+%52.3 artış** |
+| **BLEU-2 (%) ($\uparrow$)** | `4.02` | **`5.70`** | **+%41.8 artış** |
+| **ROUGE-1 (%) ($\uparrow$)** | `9.76` | **`15.89`** | **+%62.8 artış** |
+| **ROUGE-L (%) ($\uparrow$)** | `9.76` | **`14.47`** | **+%48.3 artış** |
+| **Ortalama Yanıt Süresi - Latency ($\downarrow$)** | **`30.07 ms`** | `352.90 ms` | Her iki model de gerçek zamanlı (`< 0.4 sn`) |
+
+---
+
+## 📈 Üretilen Görselleştirmeler ve Grafikler (`figures/`)
+
+### 1. Veri Bölümleme ve Keşifsel Veri Analizi (EDA)
+| Veri Bölümleme (%80 / %10 / %10) | Kelime Uzunluğu Dağılımı | Veri Kaynakları Dağılımı |
+| :---: | :---: | :---: |
+| ![Split](./figures/01_veri_bolumleme_split.png) | ![Lengths](./figures/02_kelime_uzunlugu_dagilimi.png) | ![Sources](./figures/03_veri_kaynaklari_dagilimi.png) |
+
+### 2. Model Eğitimi ve Karşılaştırmalı Başarım Analizi
+| Baseline Seq2Seq Bi-LSTM Eğitim Eğrisi | Validation Loss & Perplexity Karşılaştırması | BLEU, ROUGE ve Latency Karşılaştırması |
+| :---: | :---: | :---: |
+| ![Baseline Curve](./figures/04_baseline_lstm_egitim_egrisi.png) | ![Loss PPL Comparison](./figures/05_model_karsilastirma_loss_ppl.png) | ![Metrics Latency Comparison](./figures/06_metrik_ve_hiz_karsilastirmasi.png) |
+
+---
+
+## 🗂️ Proje Dizin Yapısı
+
+```text
 turkish-transformer-chatbot/
-│
 ├── data/
-│   ├── train.csv                        # %80 Eğitim seti (79.967 diyalog çifti)
-│   ├── train.jsonl                      # JSONL formatında eğitim seti
-│   ├── val.csv                          # %10 Doğrulama seti (9.995 diyalog çifti)
-│   ├── val.jsonl                        # JSONL formatında doğrulama seti
-│   ├── test.csv                         # %10 Test seti (9.997 diyalog çifti)
-│   ├── test.jsonl                       # JSONL formatında test seti
-│   ├── preprocessing_summary.json       # Ön işleme ve bölme özet raporu
-│   ├── turkish_dialogues_100k.csv       # Ham 100.000 Türkçe diyalog havuzu
-│   └── dataset_info.json                # Ham veri seti istatistikleri
-│
+│   ├── train.csv / val.csv / test.csv          # %80 (40k) / %10 (5k) / %10 (5k) Türkçe diyalog kümeleri
+│   ├── preprocessing_summary.json              # EDA istatistikleri ve temizleme özeti
+├── figures/                                    # 300 DPI yüksek çözünürlüklü sunum ve rapor grafikleri (01..06)
+├── models/
+│   └── baseline_seq2seq_lstm.py                # 2-Katmanlı Bi-LSTM Encoder + Bahdanau Attention + LSTM Decoder
+├── results/
+│   ├── baseline_lstm_metrics.json              # Baseline model eğitim geçmişi, metrikler ve örnek yanıtlar
+│   └── finetuned_gpt2_metrics.json             # Fine-Tuned Turkish-GPT-2 eğitim geçmişi, metrikler ve yanıtlar
 ├── tokenizer/
-│   ├── turkish_bpe_12k.json             # 12.000 Vocab Size Türkçe BPE modeli
-│   └── tokenizer_config.json            # Özel belirteçler ve yapılandırma
-│
-├── dataset.py                           # PyTorch Dataset ve DataLoader modülü (Tensör, Padding, Causal Mask)
-├── train_tokenizer.py                   # 12k BPE Tokenizer eğitim betiği
-├── preprocess_and_split.py              # Temizleme, shuffle ve %80/%10/%10 bölme betiği
-├── build_hf_dataset_100k.py             # 100.000 diyalog derleyici betik
-├── download_raw_data.py                 # Ham verileri indiren Python betiği
-├── .gitignore                           # Git takip dışı dosyalar
-└── README.md
+│   └── turkish_bpe_12k.json                    # Türkçe alt-kelime (BPE) Tokenizer (12.000 vocab)
+├── prepare_50k_and_eda.py                      # 50k filtreleme, bölümleme ve EDA grafik üretim betiği
+├── train_baseline_lstm.py                      # Baseline Seq2Seq Bi-LSTM eğitim ve değerlendirme betiği
+├── train_finetune_gpt2.py                      # Turkish-GPT-2 Fine-Tuning ve karşılaştırmalı analiz betiği
+├── ara_rapor_ieee.tex / .pdf                   # IEEE Resmi 2-Sütunlu Konferans Formatında Ara Rapor
+├── ara_sunum_ieee_beamer.tex / .pdf            # IEEE Akademik Beamer (16:9) Ara Sunum Slaytları
+└── ARA_SUNUM_RAPORU.md                         # Slayt-slayt konuşmacı notları ve sunum rehberi
 ```
-
----
-
-## 🔤 Özel Türkçe BPE Tokenizer (12.000 Kelime Dağarcığı)
-
-Türkçe sondan eklemeli bir dil olduğundan geleneksel kelime seviyesinde tokenizasyon sözlük patlamasına (Out-Of-Vocabulary) yol açar. Proje teklifine uygun olarak **12.000 Vocab Size** özel **Byte-Pair Encoding (BPE)** modeli sıfırdan eğitilmiştir:
-
-* **Özel Belirteçler (Special Tokens):**
-  * `[PAD]`: `0` (Dizi boyutu eşitleme)
-  * `[UNK]`: `1` (Bilinmeyen karakter)
-  * `[BOS]`: `2` (Dizi başlangıcı)
-  * `[EOS]`: `3` (Dizi sonu)
-  * `[SEP]`: `4` (Girdi/Yanıt ayracı)
-* **Morfolojik Ayrıştırma Testi:**
-  * Kelime: `evlerindekilerden` $\rightarrow$ `['ev', 'lerindeki', 'lerden']`
-  * Kelime: `öğrenemeyenlerimizdenmişsinizcesine` $\rightarrow$ `['öğ', 'ren', 'e', 'meyen', 'leri', 'mizden', 'miş', 'siniz', 'ce', 'sine']`
-  * Cümle: `Merhaba, nasılsın?` $\rightarrow$ `['Merhaba', ',', 'Ġnasıl', 'sın', '?']` (Kayıpsız geri çözme doğrulandı)
-
----
-
-## 🧹 Veri Ön İşleme ve Bölme (Train / Val / Test)
-
-Uygulanan veri ön işleme boru hattı adımları:
-1. **Sütun Sadeleştirme:** `kaynak` sütunu kaldırılarak yalnızca model eğitimi için gerekli olan **`girdi`** ve **`yanit`** sütunları tutuldu.
-2. **Gürültü ve HTML Temizliği:** HTML etiketleri (`<p>`, `<div>`, `<br>`), çözülmemiş HTML karakterleri (`&amp;`, `&#39;`), görünmez kontrol karakterleri ve bozuk unicode dizgileri (`\ufffd`) temizlendi.
-3. **Boşluk Normalizasyonu:** Çoklu boşluklar, sekme ve satır sonu kalıntıları tek boşluğa normalize edildi.
-4. **Geçersiz Satır Filtreleme:** Boş, aşırı kısa veya girdinin yanıta birebir eşit olduğu (papağan yanıtı) satırlar elendi.
-5. **Karıştırma (Shuffle):** Tüm veri kümesi rastgele karıştırıldı (`random_state=42`).
-6. **Bölme (Split):**
-   * **Train (%80):** 79.967 diyalog çifti
-   * **Validation (%10):** 9.995 diyalog çifti
-   * **Test (%10):** 9.997 diyalog çifti
-   * **Toplam Temiz Çift:** 99.959 satır
-
----
-
-## 🔍 Ham Verileri İnceleme
-
-Masaüstündeki `data/` klasöründe yer alan `.csv` dosyalarını doğrudan **Microsoft Excel**, **Not Defteri** veya **VS Code** ile açarak satır satır inceleyebilirsiniz:
-
-* **`kullanici_girdisi`**: Konuşmayı başlatan kullanıcının veya birinci konuşmacının cümlesi.
-* **`yanit`**: Chatbotun öğrenmesini istediğimiz karşı yanıt veya ikinci konuşmacının cümlesi.
-* **`kaynak`**: Cümlenin nereden alındığı (Hugging Face diyalogları veya OPUS Açık Altyazıları).
