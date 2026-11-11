@@ -53,7 +53,7 @@ class TurkishGPT2DialogueDataset(Dataset):
             full_ids = full_ids[:self.max_len]
 
         labels = list(full_ids)
-        prompt_len = min(len(prompt_ids), len(labels))
+        prompt_len = min(len(prompt_ids), max(0, len(labels) - 4))
         for i in range(prompt_len):
             labels[i] = -100  # Kullanıcı sorusu kayba (loss) dahil edilmez
 
@@ -73,12 +73,12 @@ class TurkishGPT2DialogueDataset(Dataset):
 
 def finetune_and_compare_gpt2(
     model_name: str = "redrussianarmy/gpt2-turkish-cased",
-    epochs: int = 3,
+    epochs: int = 5,
     batch_size: int = 32,
-    max_len: int = 72,
+    max_len: int = 112,
     lr: float = 5e-5,
-    max_train_batches: int = 200,
-    max_val_batches: int = 40
+    max_train_batches: int = 250,
+    max_val_batches: int = 50
 ):
     print("=" * 75)
     print(f"ADIM 4: ÖNCEDEN EĞİTİLMİŞ TURKISH-GPT-2 ({model_name}) FINE-TUNING")
@@ -96,7 +96,10 @@ def finetune_and_compare_gpt2(
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
+    model = AutoModelForCausalLM.from_pretrained(model_name)
+    if len(tokenizer) > model.config.vocab_size:
+        model.resize_token_embeddings(len(tokenizer))
+    model = model.to(device)
     total_params = sum(p.numel() for p in model.parameters())
     print(f"-> Turkish-GPT-2 Parametre Sayısı: {total_params:,} (~{total_params/1e6:.1f}M) | Vocab Size: {len(tokenizer):,}")
 
@@ -182,34 +185,46 @@ def finetune_and_compare_gpt2(
 
         print(f"Epoch [{epoch}/{epochs}] | Süre: {elapsed:.1f}s | Train Loss: {avg_train_loss:.4f} (PPL: {train_ppl:.2f}) | Val Loss: {avg_val_loss:.4f} (PPL: {val_ppl:.2f})")
 
-    # Çıkarım Gecikmesi (Latency) ve BLEU / ROUGE Hesaplama
-    print("\n-> Turkish-GPT-2 Çıkarım Gecikmesi ve BLEU/ROUGE hesaplanıyor...")
+    # Çıkarım Gecikmesi (Latency) ve BLEU / ROUGE Hesaplama (FP16 + KV-Cache)
+    print("\n-> Turkish-GPT-2 Çıkarım Gecikmesi (FP16 + KV-Cache) ve BPE-BLEU/ROUGE hesaplanıyor...")
     val_batch = next(iter(val_loader))
     refs, hyps, latencies = [], [], []
     sample_demos = []
 
     model.eval()
+    model_fp16 = model.half()
+    # CUDA Warmup
+    with torch.no_grad():
+        _ = model_fp16.generate(**tokenizer("Kullanıcı: Merhaba\nAsistan: ", return_tensors="pt").to(device), max_new_tokens=10)
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+
     for i in range(min(30, len(val_batch["girdi_text"]))):
         girdi_txt = val_batch["girdi_text"][i]
         gercek_txt = val_batch["yanit_text"][i]
         prompt = f"Kullanıcı: {girdi_txt}\nAsistan:"
         inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
         t_start = time.perf_counter()
         with torch.no_grad():
-            gen_ids = model.generate(
+            gen_ids = model_fp16.generate(
                 **inputs,
-                max_new_tokens=32,
-                pad_token_id=tokenizer.eos_token_id,
+                max_new_tokens=28,
+                pad_token_id=0,
                 eos_token_id=tokenizer.eos_token_id,
-                do_sample=True,
-                top_p=0.9,
-                temperature=0.7,
-                repetition_penalty=1.2
+                bad_words_ids=[[tokenizer.eos_token_id]],
+                do_sample=False,
+                num_beams=2,
+                repetition_penalty=1.25,
+                no_repeat_ngram_size=3,
+                use_cache=True
             )
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
         lat_ms = (time.perf_counter() - t_start) * 1000.0
-        full_dec = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
-        reply_txt = full_dec.split("Asistan:")[-1].split("Kullanıcı:")[0].strip()
+        reply_txt = tokenizer.decode(gen_ids[0][inputs.input_ids.shape[1]:], skip_special_tokens=True).split("\n")[0].split("Kullanıcı:")[0].strip()
 
         refs.append(gercek_txt)
         hyps.append(reply_txt)
@@ -239,9 +254,13 @@ def finetune_and_compare_gpt2(
         "sample_outputs": sample_demos
     }
 
+    model.save_pretrained("checkpoints/finetuned_gpt2_turkish")
+    tokenizer.save_pretrained("checkpoints/finetuned_gpt2_turkish")
+
     with open("results/finetuned_gpt2_metrics.json", "w", encoding="utf-8") as f:
         json.dump(gpt2_results, f, ensure_ascii=False, indent=2)
 
+    print(f"✔ Turkish-GPT-2 Model Kaydedildi: checkpoints/finetuned_gpt2_turkish")
     print(f"✔ Turkish-GPT-2 Metrik Raporu : results/finetuned_gpt2_metrics.json")
     print(f"✔ Ortalama Çıkarım Süresi     : {avg_latency_ms} ms")
     print(f"✔ BLEU-1: {text_metrics['bleu1']} | BLEU-2: {text_metrics['bleu2']} | ROUGE-L: {text_metrics['rougeL']}")

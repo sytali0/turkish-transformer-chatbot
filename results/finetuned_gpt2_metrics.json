@@ -1,0 +1,87 @@
+{
+  "model_name": "Model 1: Fine-Tuned Transformer (redrussianarmy/gpt2-turkish-cased)",
+  "parameters": 124440576,
+  "training_history": {
+    "epoch": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "train_loss": [
+      4.0577,
+      3.611,
+      3.438,
+      3.3284,
+      3.2889
+    ],
+    "val_loss": [
+      3.6954,
+      3.5815,
+      3.51,
+      3.4737,
+      3.4666
+    ],
+    "train_ppl": [
+      57.84,
+      37.0,
+      31.12,
+      27.89,
+      26.81
+    ],
+    "val_ppl": [
+      40.26,
+      35.93,
+      33.45,
+      32.26,
+      32.03
+    ],
+    "epoch_time_sec": [
+      126.6,
+      126.6,
+      129.2,
+      147.0,
+      153.6
+    ]
+  },
+  "final_val_loss": 3.4666,
+  "final_val_perplexity": 32.03,
+  "avg_inference_latency_ms": 352.9,
+  "bleu1": 10.6,
+  "bleu2": 5.7,
+  "rouge1": 15.89,
+  "rougeL": 14.47,
+  "sample_outputs": [
+    {
+      "girdi": "Faturamda 'ödeme hatası' var. Ben ödeme yaptıktan sonra neden hala bu hatayı alıyorum?",
+      "gercek_yanit": "Merhaba, hemen kontrol ediyorum. Bu genellikle sistemsel bir hata olabilir. Hesap bilgilerinizi paylaşabilir misiniz?",
+      "gpt2_yanit": "Hesap numaranızı paylaşabilir misiniz?",
+      "latency_ms": 317.33
+    },
+    {
+      "girdi": "Sanırım meditasyon yapmayı deneyebilirim. Başlamak için iyi bir kaynak var mı?",
+      "gercek_yanit": "Meditasyon için, başlangıç seviyesindeki rehberli meditasyonlar sunan \"Headspace\" veya \"Calm\" gibi uygulamaları deneyebilirsiniz. Ayrıca, YouTube'da çeşitli meditasyon teknikleri hakkında eğitici videolar bulabilirsiniz.",
+      "gpt2_yanit": "İyi bir kaynak, teşekkür ederim. Başka bir konuda yardımcı olabilir miyim?",
+      "latency_ms": 274.01
+    },
+    {
+      "girdi": "Çelebi Mehmed döneminde (1413-1420) gerçekleşen ve devleti tehdit eden iki büyük olay neydi?",
+      "gercek_yanit": "Osmanlı devleti (I. Mehmed), yeniden eski ihtişamına kavuşmak isterken, iç ve dış düşmanlarla karşılaşmıştır: İç: Şeyh Bedreddin isyanı Dış: Timur'dan esir düşen Yıldırım Bayezid'in oğlu Düzmece Mustafa'nın salıverilmesi çabaları.",
+      "gpt2_yanit": "Çelebi Mehmet döneminde (1514-1421) gerçekleşen bu olay, Çelebi Mehmed'in ölümünden sonra (1414-1521) gerçekleşmiştir",
+      "latency_ms": 450.8
+    },
+    {
+      "girdi": "Güneydoğu'daki çözüm çabalarında hangi somut aksaklıklar var?",
+      "gercek_yanit": "Hükümet, Güneydoğu'da hasar görmüş alanların yeniden inşası için yatırım planı uygulasa da, yerinden olmuş kişilere ödenen tazminat çok azdır. Barışçıl çözüm için güvenilir siyasi sürecin yeniden başlatılmasına dair hiçbir ilerleme kaydedilmemiştir.",
+      "gpt2_yanit": "Doğu'da çözüm çabalarının sınırlı olduğu görülmektedir. Bu durum, Türkiye'nin AB müktesebatıyla tam olarak uyumlu hale getirilmesi için",
+      "latency_ms": 474.7
+    },
+    {
+      "girdi": "Enerji iç piyasalarındaki ilerlemeleri maddeler hâlinde anlat. Özellikle elektrik ve doğal gaz piyasalarına odaklan.",
+      "gercek_yanit": "Elbette. Enerji piyasalarında önemli ilerlemeler kaydedilmiştir.",
+      "gpt2_yanit": "Enerji sektörü, enerji verimliliği ve enerji verimliliği gibi alanlarda önemli ilerlemeler kaydetmiştir. Enerji verimliliği ve yenilenebilir enerji kaynakları konusunda ise önemli adımlar atılmıştır.",
+      "latency_ms": 456.65
+    }
+  ]
+}

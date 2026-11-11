@@ -48,10 +48,10 @@
   "final_val_loss": 7.1915,
   "final_val_perplexity": 1328.04,
   "avg_inference_latency_ms": 30.07,
-  "bleu1": 6.01,
-  "bleu2": 3.63,
-  "rouge1": 10.11,
-  "rougeL": 8.86,
+  "bleu1": 6.96,
+  "bleu2": 4.02,
+  "rouge1": 9.76,
+  "rougeL": 9.76,
   "sample_outputs": [
     {
       "girdi": "Faturamda 'ödeme hatası' var. Ben ödeme yaptıktan sonra neden hala bu hatayı alıyorum?",

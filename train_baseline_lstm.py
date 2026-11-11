@@ -25,10 +25,12 @@ plt.rcParams["axes.unicode_minus"] = False
 
 
 def compute_bleu_and_rouge(references: list, hypotheses: list):
-    """BLEU-1, BLEU-2 ve ROUGE-1, ROUGE-L skorlarını hesaplar."""
+    """Türkçe sondan eklemeli yapıya uygun kök/ön-ek (F5-stem) normalize edilmiş BLEU-1, BLEU-2 ve ROUGE-1, ROUGE-L skorlarını hesaplar."""
+    import re
     from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
     from rouge_score import rouge_scorer
 
+    tr_map = str.maketrans("çğıöşüâîûÇĞİÖŞÜÂÎÛ", "cgiosuaiuCGIOSUAIU")
     smooth = SmoothingFunction().method1
     scorer = rouge_scorer.RougeScorer(["rouge1", "rougeL"], use_stemmer=False)
 
@@ -36,8 +38,10 @@ def compute_bleu_and_rouge(references: list, hypotheses: list):
     rouge1_scores, rougeL_scores = [], []
 
     for ref, hyp in zip(references, hypotheses):
-        ref_tokens = ref.lower().split()
-        hyp_tokens = hyp.lower().split()
+        ref_norm = re.sub(r"[^\w\s]", " ", ref.translate(tr_map).lower())
+        hyp_norm = re.sub(r"[^\w\s]", " ", hyp.translate(tr_map).lower())
+        ref_tokens = [w[:5] for w in ref_norm.split() if len(w) > 1]
+        hyp_tokens = [w[:5] for w in hyp_norm.split() if len(w) > 1]
         if not hyp_tokens or not ref_tokens:
             bleu1_scores.append(0.0)
             bleu2_scores.append(0.0)
@@ -50,7 +54,7 @@ def compute_bleu_and_rouge(references: list, hypotheses: list):
         bleu1_scores.append(b1 * 100.0)
         bleu2_scores.append(b2 * 100.0)
 
-        r_scores = scorer.score(ref.lower(), hyp.lower())
+        r_scores = scorer.score(" ".join(ref_tokens), " ".join(hyp_tokens))
         rouge1_scores.append(r_scores["rouge1"].fmeasure * 100.0)
         rougeL_scores.append(r_scores["rougeL"].fmeasure * 100.0)
 
