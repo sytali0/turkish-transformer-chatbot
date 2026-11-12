@@ -1,0 +1,67 @@
+{
+  "scale": "1-5 Likert Ölçeği (1: Çok Zayıf, 5: Mükemmel)",
+  "num_evaluated_dialogues": 30,
+  "criteria": [
+    "Akıcılık ve Dilbilgisi (Fluency)",
+    "Mantıksal Bütünlük (Coherence)",
+    "Konudan Sapmama (Relevance)",
+    "Genel Ortalama (Overall)"
+  ],
+  "scores": {
+    "Baseline Seq2Seq Bi-LSTM": {
+      "fluency": 2.45,
+      "coherence": 2.1,
+      "relevance": 2.25,
+      "overall": 2.27
+    },
+    "Model 1: Full Fine-Tuned GPT-2": {
+      "fluency": 4.45,
+      "coherence": 4.2,
+      "relevance": 4.3,
+      "overall": 4.32
+    },
+    "Model 2: LoRA / PEFT GPT-2": {
+      "fluency": 4.25,
+      "coherence": 3.95,
+      "relevance": 4.05,
+      "overall": 4.08
+    }
+  },
+  "three_way_sample_dialogues": [
+    {
+      "girdi": "Faturamda 'ödeme hatası' var. Ben ödeme yaptıktan sonra neden hala bu hatayı alıyorum?",
+      "gercek_yanit": "Merhaba, hemen kontrol ediyorum. Bu genellikle sistemsel bir hata olabilir. Hesap bilgilerinizi paylaşabilir misiniz?",
+      "baseline_yanit": "Merhaba, yaşadığınız sorun için üzgünüz. Hemen kontrol ediyorum ve değişim işlem ücreti yanlışlıkla eklenmiş.",
+      "full_ft_gpt2_yanit": "Hesap numaranızı paylaşabilir misiniz?",
+      "lora_gpt2_yanit": "Bu hata için özür dileriz. İade işlemini başlattıktan sonra, iade işlemini başlatabilirsiniz. Ayrıca, iade işlemi için gerekli olan tüm adımları takip edebilirsiniz"
+    },
+    {
+      "girdi": "Sanırım meditasyon yapmayı deneyebilirim. Başlamak için iyi bir kaynak var mı?",
+      "gercek_yanit": "Meditasyon için, başlangıç seviyesindeki rehberli meditasyonlar sunan \"Headspace\" veya \"Calm\" gibi uygulamaları deneyebilirsiniz. Ayrıca, YouTube'da çeşitli meditasyon teknikleri hakkında eğitici videolar bulabilirsiniz.",
+      "baseline_yanit": "Evet, bu tür bir., ve!",
+      "full_ft_gpt2_yanit": "İyi bir kaynak, teşekkür ederim. Başka bir konuda yardımcı olabilir miyim?",
+      "lora_gpt2_yanit": "Bu, meditasyonun en önemli parçası. Eğer meditasyon yapmak istiyorsanız, meditasyona başlamadan önce bir uzmana danışın. Ayrıca, meditasyonda daha"
+    },
+    {
+      "girdi": "Çelebi Mehmed döneminde (1413-1420) gerçekleşen ve devleti tehdit eden iki büyük olay neydi?",
+      "gercek_yanit": "Osmanlı devleti (I. Mehmed), yeniden eski ihtişamına kavuşmak isterken, iç ve dış düşmanlarla karşılaşmıştır: İç: Şeyh Bedreddin isyanı Dış: Timur'dan esir düşen Yıldırım Bayezid'in oğlu Düzmece Mustafa'nın salıverilmesi çabaları.",
+      "baseline_yanit": "E-19,'nin (19-4'nin %5. Bu,'nin %.,'nin %.,'nin %",
+      "full_ft_gpt2_yanit": "Çelebi Mehmet döneminde (1514-1421) gerçekleşen bu olay, Çelebi Mehmed'in ölümünden sonra (1414-1521) gerçekleşmiştir",
+      "lora_gpt2_yanit": "Sultan II. Murad'ın ölümü üzerine, Çelebi Mehmed'in yerine oğlu Şehzade Mehmed'e (1414-1421) bağlı bir"
+    },
+    {
+      "girdi": "Güneydoğu'daki çözüm çabalarında hangi somut aksaklıklar var?",
+      "gercek_yanit": "Hükümet, Güneydoğu'da hasar görmüş alanların yeniden inşası için yatırım planı uygulasa da, yerinden olmuş kişilere ödenen tazminat çok azdır. Barışçıl çözüm için güvenilir siyasi sürecin yeniden başlatılmasına dair hiçbir ilerleme kaydedilmemiştir.",
+      "baseline_yanit": "KİK, ve.'nun, ve.'nin % ve.,'nin %. ve,'nin %. ve,'nin",
+      "full_ft_gpt2_yanit": "Doğu'da çözüm çabalarının sınırlı olduğu görülmektedir. Bu durum, Türkiye'nin AB müktesebatıyla tam olarak uyumlu hale getirilmesi için",
+      "lora_gpt2_yanit": "Doğu ve Güneydoğu'da çözüm çabalarının yetersiz kaldığı görülmektedir. Bu durum, Türkiye'nin AB müktesebatıyla uyumlu hale gelmesi için"
+    },
+    {
+      "girdi": "Enerji iç piyasalarındaki ilerlemeleri maddeler hâlinde anlat. Özellikle elektrik ve doğal gaz piyasalarına odaklan.",
+      "gercek_yanit": "Elbette. Enerji piyasalarında önemli ilerlemeler kaydedilmiştir.",
+      "baseline_yanit": "KİK, ve temel sorunlar şunlardır: 1. ve,: 1. ve,: 1. ve,: 1. ve,: 1.",
+      "full_ft_gpt2_yanit": "Enerji sektörü, enerji verimliliği ve enerji verimliliği gibi alanlarda önemli ilerlemeler kaydetmiştir. Enerji verimliliği ve yenilenebilir enerji kaynakları konusunda ise önemli adımlar atılmıştır.",
+      "lora_gpt2_yanit": "Enerji dış piyasalarının iyileşmesi, enerji verimliliği ve enerji verimliliği gibi konularda ilerleme kaydedilmiştir. Ayrıca, enerji verimliliğinin artırılması ve enerji verimliliğine"
+    }
+  ]
+}
