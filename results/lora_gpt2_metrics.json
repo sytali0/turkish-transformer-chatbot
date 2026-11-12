@@ -1,0 +1,93 @@
+{
+  "model_name": "Model 2: LoRA / PEFT Fine-Tuned Transformer (redrussianarmy/gpt2-turkish-cased, r=16, alpha=32)",
+  "total_parameters": 126062592,
+  "trainable_parameters": 1622016,
+  "trainable_percentage": 1.29,
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "peak_vram_mb": 6239.9,
+  "total_train_time_sec": 486.9,
+  "training_history": {
+    "epoch": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "train_loss": [
+      4.321,
+      4.1581,
+      4.0978,
+      4.1032,
+      4.079
+    ],
+    "val_loss": [
+      4.1389,
+      4.0782,
+      4.0482,
+      4.0365,
+      4.0342
+    ],
+    "train_ppl": [
+      75.26,
+      63.95,
+      60.21,
+      60.53,
+      59.08
+    ],
+    "val_ppl": [
+      62.73,
+      59.04,
+      57.29,
+      56.63,
+      56.5
+    ],
+    "epoch_time_sec": [
+      92.2,
+      94.4,
+      96.4,
+      98.2,
+      105.7
+    ]
+  },
+  "final_val_loss": 4.0342,
+  "final_val_perplexity": 56.5,
+  "avg_inference_latency_ms": 410.85,
+  "bleu1": 8.18,
+  "bleu2": 2.78,
+  "rouge1": 11.45,
+  "rougeL": 10.13,
+  "sample_outputs": [
+    {
+      "girdi": "Faturamda 'ödeme hatası' var. Ben ödeme yaptıktan sonra neden hala bu hatayı alıyorum?",
+      "gercek_yanit": "Merhaba, hemen kontrol ediyorum. Bu genellikle sistemsel bir hata olabilir. Hesap bilgilerinizi paylaşabilir misiniz?",
+      "lora_yanit": "Bu hata için özür dileriz. İade işlemini başlattıktan sonra, iade işlemini başlatabilirsiniz. Ayrıca, iade işlemi için gerekli olan tüm adımları takip edebilirsiniz",
+      "latency_ms": 598.44
+    },
+    {
+      "girdi": "Sanırım meditasyon yapmayı deneyebilirim. Başlamak için iyi bir kaynak var mı?",
+      "gercek_yanit": "Meditasyon için, başlangıç seviyesindeki rehberli meditasyonlar sunan \"Headspace\" veya \"Calm\" gibi uygulamaları deneyebilirsiniz. Ayrıca, YouTube'da çeşitli meditasyon teknikleri hakkında eğitici videolar bulabilirsiniz.",
+      "lora_yanit": "Bu, meditasyonun en önemli parçası. Eğer meditasyon yapmak istiyorsanız, meditasyona başlamadan önce bir uzmana danışın. Ayrıca, meditasyonda daha",
+      "latency_ms": 393.09
+    },
+    {
+      "girdi": "Çelebi Mehmed döneminde (1413-1420) gerçekleşen ve devleti tehdit eden iki büyük olay neydi?",
+      "gercek_yanit": "Osmanlı devleti (I. Mehmed), yeniden eski ihtişamına kavuşmak isterken, iç ve dış düşmanlarla karşılaşmıştır: İç: Şeyh Bedreddin isyanı Dış: Timur'dan esir düşen Yıldırım Bayezid'in oğlu Düzmece Mustafa'nın salıverilmesi çabaları.",
+      "lora_yanit": "Sultan II. Murad'ın ölümü üzerine, Çelebi Mehmed'in yerine oğlu Şehzade Mehmed'e (1414-1421) bağlı bir",
+      "latency_ms": 402.79
+    },
+    {
+      "girdi": "Güneydoğu'daki çözüm çabalarında hangi somut aksaklıklar var?",
+      "gercek_yanit": "Hükümet, Güneydoğu'da hasar görmüş alanların yeniden inşası için yatırım planı uygulasa da, yerinden olmuş kişilere ödenen tazminat çok azdır. Barışçıl çözüm için güvenilir siyasi sürecin yeniden başlatılmasına dair hiçbir ilerleme kaydedilmemiştir.",
+      "lora_yanit": "Doğu ve Güneydoğu'da çözüm çabalarının yetersiz kaldığı görülmektedir. Bu durum, Türkiye'nin AB müktesebatıyla uyumlu hale gelmesi için",
+      "latency_ms": 393.75
+    },
+    {
+      "girdi": "Enerji iç piyasalarındaki ilerlemeleri maddeler hâlinde anlat. Özellikle elektrik ve doğal gaz piyasalarına odaklan.",
+      "gercek_yanit": "Elbette. Enerji piyasalarında önemli ilerlemeler kaydedilmiştir.",
+      "lora_yanit": "Enerji dış piyasalarının iyileşmesi, enerji verimliliği ve enerji verimliliği gibi konularda ilerleme kaydedilmiştir. Ayrıca, enerji verimliliğinin artırılması ve enerji verimliliğine",
+      "latency_ms": 378.85
+    }
+  ]
+}
